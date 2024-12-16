@@ -17,21 +17,21 @@ class HomeMhsViewModel(
     private val repositoryMhs: RepositoryMhs
 ) : ViewModel() {
 
-    val homeUIState: StateFlow<HomeUIState> = repositoryMhs.getAllMhs()
+    val homeUiState: StateFlow<HomeUiState> = repositoryMhs.getAllMhs()
         .filterNotNull()
         .map {
-            HomeUIState(
+            HomeUiState(
                 listMhs = it.toList(),
                 isLoading = false,
             )
         }
         .onStart {
-            emit(HomeUIState(isLoading = true))
+            emit(HomeUiState(isLoading = true))
             delay(900)
         }
         .catch {
             emit(
-                HomeUIState(
+                HomeUiState(
                     isLoading = false,
                     isError = true,
                     errorMessage = it.message ?: "Terjadi Kesalahan"
@@ -41,14 +41,14 @@ class HomeMhsViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = HomeUIState(
+            initialValue = HomeUiState(
                 isLoading = true
             )
         )
 
 }
 
-data class HomeUIState(
+data class HomeUiState(
     val listMhs: List<Mahasiswa> = listOf(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,

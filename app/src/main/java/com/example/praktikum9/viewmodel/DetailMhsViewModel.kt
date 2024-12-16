@@ -23,21 +23,21 @@ class DetailMhsViewModel(
 ) : ViewModel() {
     private val _nim: String = checkNotNull(savedStateHandle[AlamatNavigasi.DestinasiDetail.NIM])
 
-    val detailUIState: StateFlow<DetailMhsUIState> = repositoryMhs.getMhs(_nim)
+    val detailUiState: StateFlow<DetailMhsUiState> = repositoryMhs.getMhs(_nim)
         .filterNotNull()
         .map {
-            DetailMhsUIState(
+            DetailMhsUiState(
                 detailUiEvent = it.toDetailUiEvent(),
                 isLoading = false,
             )
         }
         .onStart {
-            emit(DetailMhsUIState(isLoading = true))
+            emit(DetailMhsUiState(isLoading = true))
             delay(600)
         }
         .catch {
             emit(
-                DetailMhsUIState(
+                DetailMhsUiState(
                     isLoading = false,
                     isError = true,
                     errorMessage = it.message ?: "Terjadi Kesalahan"
@@ -47,19 +47,19 @@ class DetailMhsViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(2000),
-            initialValue = DetailMhsUIState(
+            initialValue = DetailMhsUiState(
                 isLoading = true
             ),
         )
     fun deleteMhs() {
-        detailUIState.value.detailUiEvent.toMahasiswaEntity().let {
+        detailUiState.value.detailUiEvent.toMahasiswaEntity().let {
             viewModelScope.launch {
                 repositoryMhs.deleteMhs(it)
             }
         }
     }
 }
-data class DetailMhsUIState(
+data class DetailMhsUiState(
     val detailUiEvent: MahasiswaEvent = MahasiswaEvent(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
