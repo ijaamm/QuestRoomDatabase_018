@@ -128,3 +128,62 @@ fun ListMahasiswa(
     }
 }
 
+@Composable
+fun BodyHomeMhsView(
+    homeUiState: HomeUiState,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = { }
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val snackBarHostState = remember { SnackbarHostState() }
+    when {
+        homeUiState.isLoading -> {
+            // Menampilkan Indikator Loading
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        homeUiState.isError -> {
+            // Menampilkan Snackbar jika terjadi kesalahan
+            LaunchedEffect(homeUiState.errorMessage) {
+                homeUiState.errorMessage?.let { message ->
+                    coroutineScope.launch {
+                        snackBarHostState.showSnackbar(message) // Tampilkan Snackbar
+                    }
+                }
+            }
+        }
+
+        homeUiState.listMhs.isEmpty() -> {
+            // Menampilkan pesan jika daftar mahasiswa kosong
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Tidak Ada Data Mahasiswa",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+
+        else -> {
+            // Menampilkan daftar mahasiswa jika tidak ada kesalahan
+            ListMahasiswa(
+                listMhs = homeUiState.listMhs,
+                onClick = {
+                    onClick(it)
+                    println(it)
+                },
+                modifier = modifier
+            )
+        }
+    }
+}
+
