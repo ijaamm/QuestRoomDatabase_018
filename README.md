@@ -10,3 +10,7 @@ delete data
 ![Delete data](https://github.com/user-attachments/assets/5a73135c-75ea-4944-8f03-a968b6021d9e)
 delete data lintang
 ![delete data lintang](https://github.com/user-attachments/assets/08ebc11a-78e0-496e-913d-ac5982132f33)
+edit mahasiswa
+![edit mahasiswa](https://github.com/user-attachments/assets/67dcd7de-b4d2-4ca9-8311-ecd0a41d02e9)
+setelah edit
+![setelah di edit](https://github.com/user-attachments/assets/4e5e56c3-0fcb-4fd8-9931-9d3be42ec9ef)
